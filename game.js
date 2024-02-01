@@ -89,15 +89,17 @@ const gameRound = (playerSelection, computerSelection) => {
 
 const main = () => {
     const playerChoice = getPlayerChoice();
-    console.log(`You entered: ${playerChoice}`);
+    document.getElementById('player').innerHTML = `You entered: ${playerChoice}`;
     const computerChoice = getComputerChoice();
-    console.log(`Your opponent entered: ${computerChoice}`);
+    document.getElementById('computer').innerHTML = `Your opponent entered: ${computerChoice}`;
     const result = gameRound(playerChoice, computerChoice);
+    let res = '';
     if (result == 'Tie') {
-        console.log(`${result}! Neither won.`);
+        res = `${result}! Neither won.`;
     }
     else {
-        console.log(`${result} won.`);
+        res = `${result} won.`;
     }
+    document.getElementById('response').innerHTML = res;
 }
 main();
