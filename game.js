@@ -115,8 +115,26 @@ const playFullGame = async () => {
     console.log(choices);
     // Get player choice
     const playerChoice = await getPlayerChoice(choices);
-    console.log(playerChoice)
+    // Get computer choice
+    const computerChoice = getComputerChoice();
+    // Compare choices
     const result = gameRound(playerChoice, computerChoice);
+    // Remove all choices
+    content.removeChild(button_rock);
+    content.removeChild(button_paper);
+    content.removeChild(button_scissors);
+    // Replace with another div container
+    const resultContent = document.createElement('div');
+    resultContent.classList.add('result');
+    content.appendChild(resultContent);
+    // Player move display
+    const text_playerMove = document.createElement('div');
+    text_playerMove.textContent = `You selected ${playerChoice}`;
+    resultContent.appendChild(text_playerMove);
+    // Computer move display
+    const text_computerMove = document.createElement('div');
+    text_computerMove.textContent = `Your opponent selected ${computerChoice}`;
+    resultContent.appendChild(text_computerMove);
     let res = '';
     if (result == 'Tie') {
         res = `${result}! Neither won.`;
@@ -124,7 +142,9 @@ const playFullGame = async () => {
     else {
         res = `${result} won.`;
     }
-    document.getElementById('response').innerHTML = res;
+    const text_result = document.createElement('div');
+    text_result.textContent = res;
+    resultContent.appendChild(text_result);
 }
 
 const main = () => {
