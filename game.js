@@ -21,12 +21,9 @@ const getComputerChoice = () => {
 }
 
 const getPlayerChoice = (choices) => {
-    let id = '';
-    console.log(choices);
     const promise = new Promise(resolve => {
         choices.forEach(choice => {
             choice.addEventListener('click', () => {
-                console.log('dd');
                 resolve(choice.id);
             });
             
@@ -90,10 +87,8 @@ const gameRound = (playerSelection, computerSelection) => {
 const playFullGame = async () => {
     // Retrieve contents element containing 'Start Game' button
     const content = document.querySelector('.contents');
-    console.log(content);
-    const button_org = content.querySelector('button');
     // Remove 'Start Game' button
-    content.removeChild(button_org);
+    content.innerHTML = '';
     // Replace with choices
     // Rock
     const button_rock = document.createElement('button');
@@ -112,7 +107,6 @@ const playFullGame = async () => {
     button_scissors.textContent = 'Scissors';
     // Insert one event listener for all buttons
     const choices = document.querySelectorAll('button');
-    console.log(choices);
     // Get player choice
     const playerChoice = await getPlayerChoice(choices);
     // Get computer choice
@@ -135,6 +129,7 @@ const playFullGame = async () => {
     const text_computerMove = document.createElement('div');
     text_computerMove.textContent = `Your opponent selected ${computerChoice}`;
     resultContent.appendChild(text_computerMove);
+    // Determine which participant won or whether they scored a tie
     let res = '';
     if (result == 'Tie') {
         res = `${result}! Neither won.`;
@@ -142,9 +137,19 @@ const playFullGame = async () => {
     else {
         res = `${result} won.`;
     }
+    // Display the final result
     const text_result = document.createElement('div');
     text_result.textContent = res;
     resultContent.appendChild(text_result);
+    // Option to restart game
+    restartGame(content);
+}
+
+const restartGame = (content) => {
+    const restartButton = document.createElement('button');
+    restartButton.textContent = 'Restart Game';
+    content.appendChild(restartButton);
+    restartButton.addEventListener('click', playFullGame);
 }
 
 const main = () => {
