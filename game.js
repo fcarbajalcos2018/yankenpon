@@ -20,20 +20,20 @@ const getComputerChoice = () => {
     return choice;
 }
 
-const getPlayerChoice = () => {
-    // Enable user to enter a text parametre
-    const choice = prompt('Enter your choice: Rock, Paper or Scissors');
-    // Convert any uppercase letter to lowercase for case-insensitiveness
-    const caseCorrectChoice = choice.toLowerCase();
-    let response = ''; // Initialise response as empty string
-    if (['rock', 'paper', 'scissors'].includes(caseCorrectChoice)) {
-        response = caseCorrectChoice; // If choice is valid, set response to choice
-    }
-    else {
-        console.warn('You have entered an invalid choice.')
-        response = getPlayerChoice(); // If choice is not valid, recursively call function until valid
-    }
-    return response;
+const getPlayerChoice = (choices) => {
+    let id = '';
+    console.log(choices);
+    const promise = new Promise(resolve => {
+        choices.forEach(choice => {
+            choice.addEventListener('click', () => {
+                console.log('dd');
+                resolve(choice.id);
+            });
+            
+        })
+    })
+    
+    return promise;
 }
 
 const gameRound = (playerSelection, computerSelection) => {
@@ -87,11 +87,35 @@ const gameRound = (playerSelection, computerSelection) => {
     return winner;
 }
 
-const main = () => {
-    const playerChoice = getPlayerChoice();
-    document.getElementById('player').innerHTML = `You entered: ${playerChoice}`;
-    const computerChoice = getComputerChoice();
-    document.getElementById('computer').innerHTML = `Your opponent entered: ${computerChoice}`;
+const playFullGame = async () => {
+    // Retrieve contents element containing 'Start Game' button
+    const content = document.querySelector('.contents');
+    console.log(content);
+    const button_org = content.querySelector('button');
+    // Remove 'Start Game' button
+    content.removeChild(button_org);
+    // Replace with choices
+    // Rock
+    const button_rock = document.createElement('button');
+    button_rock.setAttribute('id', 'rock');
+    content.appendChild(button_rock);
+    button_rock.textContent = 'Rock';
+    // Paper
+    const button_paper = document.createElement('button');
+    button_paper.setAttribute('id', 'paper');
+    content.appendChild(button_paper);
+    button_paper.textContent = 'Paper';
+    // Scissors
+    const button_scissors = document.createElement('button');
+    button_scissors.setAttribute('id', 'scissors');
+    content.appendChild(button_scissors);
+    button_scissors.textContent = 'Scissors';
+    // Insert one event listener for all buttons
+    const choices = document.querySelectorAll('button');
+    console.log(choices);
+    // Get player choice
+    const playerChoice = await getPlayerChoice(choices);
+    console.log(playerChoice)
     const result = gameRound(playerChoice, computerChoice);
     let res = '';
     if (result == 'Tie') {
@@ -101,5 +125,10 @@ const main = () => {
         res = `${result} won.`;
     }
     document.getElementById('response').innerHTML = res;
+}
+
+const main = () => {
+    const playGame = document.querySelector('button');
+    playGame.addEventListener('click', playFullGame);
 }
 main();
