@@ -13,6 +13,11 @@ button {
     font-size: large;
 }
 
+.contents {
+    display: flex;
+    flex-direction: row;
+}
+
 .title {
     font-size: xx-large;
     font-weight: 100;
